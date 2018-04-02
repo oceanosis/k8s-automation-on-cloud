@@ -15,6 +15,5 @@ variable "AMIS" {
     us-west-2 = "ami-dff017b8"
   }
 }
-variable "INSTANCE_DEVICE_NAME" {
-  default = "/dev/xvdh"
-}
+
+variable "RDS_PASSWORD" {}

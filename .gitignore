@@ -1,6 +1,6 @@
-*/terraform.tfvars
-*/terraform.tfstate
-*/terraform.tfstate.backup
-*/.terraform
-*/out.*
-*/mykey*
+terraform.tfvars
+terraform.tfstate
+terraform.tfstate.backup
+.terraform/*
+out.*
+mykey*
