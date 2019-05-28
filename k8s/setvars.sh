@@ -10,3 +10,5 @@ export ANSIBLE_ROLES_PATH="$BASEDIR/roles"
 export ANSIBLE_SSH_ARGS="-C -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -o ControlMaster=auto -o ControlPersist=60s"
 export ANSIBLE_PRIVATE_KEY_FILE="$BASEDIR/../aws/automation"
 
+
+
