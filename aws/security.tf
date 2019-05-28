@@ -26,27 +26,27 @@ tags {
   }
 }
 
-resource "aws_security_group" "private-sg" {
-  vpc_id = "${aws_vpc.main.id}"
-  name = "private-sg"
-  description = "security group that allows only internal ingress traffic and all egress traffic"
-  egress {
-      from_port = 0
-      to_port = 0
-      protocol = "-1"
-      cidr_blocks = ["10.0.0.0/16"]
-  }
-  ingress {
-      from_port = 3306
-      to_port = 3306
-      protocol = "tcp"
-      security_groups = ["${aws_security_group.public-sg.id}"]              # allowing access from our example instance
-  }
-  tags {
-    Name = "private-sg"
-  }
-}
-
+#resource "aws_security_group" "private-sg" {
+#  vpc_id = "${aws_vpc.main.id}"
+#  name = "private-sg"
+#  description = "security group that allows only internal ingress traffic and all egress traffic"
+#  egress {
+#      from_port = 0
+#      to_port = 0
+#      protocol = "-1"
+#      cidr_blocks = ["10.0.0.0/16"]
+#  }
+#  ingress {
+#      from_port = 3306
+#      to_port = 3306
+#      protocol = "tcp"
+#      security_groups = ["${aws_security_group.public-sg.id}"]              # allowing access from our example instance
+#  }
+#  tags {
+#    Name = "private-sg"
+#  }
+#}
+#
 data "aws_subnet_ids" "public" {
   vpc_id = "${aws_vpc.main.id}"
   tags {
@@ -114,35 +114,35 @@ resource "aws_network_acl" "public-NACL" {
 }
 
 
-data "aws_subnet_ids" "private" {
-  vpc_id = "${aws_vpc.main.id}"
-  tags {
-    Tier = "Private"
-  }
-}
+#data "aws_subnet_ids" "private" {
+#  vpc_id = "${aws_vpc.main.id}"
+#  tags {
+#    Tier = "Private"
+#  }
+#}
 
-resource "aws_network_acl" "private-NACL" {
-  vpc_id = "${aws_vpc.main.id}"
-  subnet_ids     = ["${data.aws_subnet_ids.private.ids}"]
-
-  ingress {
-    protocol   = -1
-    rule_no    = 100
-    action     = "allow"
-    cidr_block = "10.0.0.0/16"
-    from_port  = 0
-    to_port    = 0
-  }
-
-  egress {
-    protocol   = -1
-    rule_no    = 100
-    action     = "allow"
-    cidr_block = "10.0.0.0/16"
-    from_port  = 0
-    to_port    = 0
-  }
-  tags {
-    Name = "private-acl"
-  }
-}
+#resource "aws_network_acl" "private-NACL" {
+#  vpc_id = "${aws_vpc.main.id}"
+#  subnet_ids     = ["${data.aws_subnet_ids.private.ids}"]
+#
+#  ingress {
+#    protocol   = -1
+#    rule_no    = 100
+#    action     = "allow"
+#    cidr_block = "10.0.0.0/16"
+#    from_port  = 0
+#    to_port    = 0
+#  }
+#
+#  egress {
+#    protocol   = -1
+#    rule_no    = 100
+#    action     = "allow"
+#    cidr_block = "10.0.0.0/16"
+#    from_port  = 0
+#    to_port    = 0
+#  }
+#  tags {
+#    Name = "private-acl"
+#  }
+#}

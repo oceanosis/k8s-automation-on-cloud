@@ -4,16 +4,17 @@ variable "AWS_REGION" {
   default = "eu-west-2"
 }
 variable "PATH_TO_PRIVATE_KEY" {
-  default = "mykey"
+  default = "automation"
 }
 variable "PATH_TO_PUBLIC_KEY" {
-  default = "mykey.pub"
+  default = "automation.pub"
 }
 variable "AMIS" {
   type = "map"
   default = {
-    us-west-2 = "ami-dff017b8"
+    us-west-2 = "ami-0009a33f033d8b7b6"
   }
 }
-
-variable "RDS_PASSWORD" {}
+variable "instance_type" {
+  default = "t2.micro"
+}
