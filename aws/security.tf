@@ -21,7 +21,7 @@ resource "aws_security_group" "public-sg" {
       protocol = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
   } 
-tags {
+tags = {
     Name = "public-sg"
   }
 }
@@ -42,21 +42,14 @@ tags {
 #      protocol = "tcp"
 #      security_groups = ["${aws_security_group.public-sg.id}"]              # allowing access from our example instance
 #  }
-#  tags {
+#  tags = {
 #    Name = "private-sg"
 #  }
 #}
 #
-data "aws_subnet_ids" "public" {
-  vpc_id = "${aws_vpc.main.id}"
-  tags {
-    Tier = "Public"
-  }
-}
 
 resource "aws_network_acl" "public-NACL" {
-  vpc_id = "${aws_vpc.main.id}"
-  subnet_ids     = ["${data.aws_subnet_ids.public.ids}"]
+  vpc_id       = "${aws_vpc.main.id}"
   egress {
     protocol   = "tcp"
     rule_no    = 100
@@ -108,7 +101,7 @@ resource "aws_network_acl" "public-NACL" {
     from_port  = 32768
     to_port    = 65535
   }
-  tags {
+  tags = {
     Name = "public-acl"
   }
 }
@@ -116,7 +109,7 @@ resource "aws_network_acl" "public-NACL" {
 
 #data "aws_subnet_ids" "private" {
 #  vpc_id = "${aws_vpc.main.id}"
-#  tags {
+#  tags = {
 #    Tier = "Private"
 #  }
 #}
@@ -142,7 +135,7 @@ resource "aws_network_acl" "public-NACL" {
 #    from_port  = 0
 #    to_port    = 0
 #  }
-#  tags {
+#  tags = {
 #    Name = "private-acl"
 #  }
 #}

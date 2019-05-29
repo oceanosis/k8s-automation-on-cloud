@@ -9,11 +9,8 @@ variable "PATH_TO_PRIVATE_KEY" {
 variable "PATH_TO_PUBLIC_KEY" {
   default = "automation.pub"
 }
-variable "AMIS" {
-  type = "map"
-  default = {
-    us-west-2 = "ami-0009a33f033d8b7b6"
-  }
+variable "ami_id" {
+  default = "ami-0009a33f033d8b7b6"
 }
 variable "instance_type" {
   default = "t2.micro"

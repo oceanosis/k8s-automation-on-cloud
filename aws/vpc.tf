@@ -5,7 +5,7 @@ resource "aws_vpc" "main" {
     enable_dns_support = "true"
     enable_dns_hostnames = "true"
     enable_classiclink = "false"
-    tags {
+    tags = {
         Name = "main"
     }
 }
@@ -18,7 +18,7 @@ resource "aws_subnet" "main-public-1" {
     map_public_ip_on_launch = "true"
     availability_zone = "eu-west-2a"
 
-    tags {
+    tags = {
         Name = "main-public-1"
         Tier = "Public"
     }
@@ -29,7 +29,7 @@ resource "aws_subnet" "main-public-2" {
     map_public_ip_on_launch = "true"
     availability_zone = "eu-west-2b"
 
-    tags {
+    tags = {
         Name = "main-public-2"
         Tier = "Public"
     }
@@ -40,50 +40,50 @@ resource "aws_subnet" "main-public-3" {
     map_public_ip_on_launch = "true"
     availability_zone = "eu-west-2c"
 
-    tags {
+    tags = {
         Name = "main-public-3"
         Tier = "Public"
     }
 }
-resource "aws_subnet" "main-private-1" {
-    vpc_id = "${aws_vpc.main.id}"
-    cidr_block = "10.0.4.0/24"
-    map_public_ip_on_launch = "false"
-    availability_zone = "eu-west-2a"
-
-    tags {
-        Name = "main-private-1"
-        Tier = "Private"
-    }
-}
-resource "aws_subnet" "main-private-2" {
-    vpc_id = "${aws_vpc.main.id}"
-    cidr_block = "10.0.5.0/24"
-    map_public_ip_on_launch = "false"
-    availability_zone = "eu-west-2b"
-
-    tags {
-        Name = "main-private-2"
-        Tier = "Private"
-    }
-}
-resource "aws_subnet" "main-private-3" {
-    vpc_id = "${aws_vpc.main.id}"
-    cidr_block = "10.0.6.0/24"
-    map_public_ip_on_launch = "false"
-    availability_zone = "eu-west-2c"
-
-    tags {
-        Name = "main-private-3"
-        Tier = "Private"
-    }
-}
+#resource "aws_subnet" "main-private-1" {
+#    vpc_id = "${aws_vpc.main.id}"
+#    cidr_block = "10.0.4.0/24"
+#    map_public_ip_on_launch = "false"
+#    availability_zone = "eu-west-2a"
+#
+#    tags = {
+#        Name = "main-private-1"
+#        Tier = "Private"
+#    }
+#}
+#resource "aws_subnet" "main-private-2" {
+#    vpc_id = "${aws_vpc.main.id}"
+#    cidr_block = "10.0.5.0/24"
+#    map_public_ip_on_launch = "false"
+#    availability_zone = "eu-west-2b"
+#
+#    tags = {
+#        Name = "main-private-2"
+#        Tier = "Private"
+#    }
+#}
+#resource "aws_subnet" "main-private-3" {
+#    vpc_id = "${aws_vpc.main.id}"
+#    cidr_block = "10.0.6.0/24"
+#    map_public_ip_on_launch = "false"
+#    availability_zone = "eu-west-2c"
+#
+#    tags = {
+#        Name = "main-private-3"
+#        Tier = "Private"
+#    }
+#}
 
 # Internet GW
 resource "aws_internet_gateway" "main-gw" {
     vpc_id = "${aws_vpc.main.id}"
 
-    tags {
+    tags = {
         Name = "main"
     }
 }
@@ -96,7 +96,7 @@ resource "aws_route_table" "main-public" {
         gateway_id = "${aws_internet_gateway.main-gw.id}"
     }
 
-    tags {
+    tags = {
         Name = "main-public"
     }
 }
@@ -123,7 +123,7 @@ resource "aws_route_table_association" "main-public-3-a" {
 #resource "aws_nat_gateway" "nat-gw" {
 #    allocation_id = "${aws_eip.nat-ip.id}"
 #    subnet_id     = "${aws_subnet.main-public-1.id}"
-#    tags {
+#    tags = {
 #        Name = "main"
 #    }
 #}
@@ -136,7 +136,7 @@ resource "aws_route_table_association" "main-public-3-a" {
 #        gateway_id = "${aws_nat_gateway.nat-gw.id}"
 #    }
 #
-#    tags {
+#    tags = {
 #        Name = "main-private"
 #    }
 #}
