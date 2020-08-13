@@ -4,3 +4,47 @@ terraform.tfstate.backup
 .terraform/*
 out.*
 automation*
+
+.idea
+*.iml
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+*.out
+*.zip
+
+# Crash log files
+crash.log
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+v-env/
+env.bak/
+venv.bak/
+
+*.txt
+© 2020 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
