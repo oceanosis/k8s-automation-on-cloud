@@ -21,6 +21,7 @@ resource "aws_instance" "k8s_master" {
   key_name             = aws_key_pair.mykeypair.key_name
   vpc_security_group_ids = [ aws_security_group.private-sg.id ]
   subnet_id = data.aws_subnet.private.id
+  private_ip = var.master_instance_ips[ count.index]
   root_block_device {
     volume_type = "gp2"
     volume_size = 20
@@ -31,6 +32,7 @@ resource "aws_instance" "k8s_master" {
     volume_type = "gp2"
     volume_size = 20
   }
+  user_data = file("scripts/prepare_master.sh")
   tags = {
     Name = format("master%d", var.master_instances[ count.index])
   }
@@ -43,6 +45,7 @@ resource "aws_instance" "k8s_worker" {
   key_name             = aws_key_pair.mykeypair.key_name
   vpc_security_group_ids = [ aws_security_group.private-sg.id ]
   subnet_id = data.aws_subnet.private.id
+  private_ip = var.worker_instance_ips[ count.index]
   root_block_device {
     volume_type = "gp2"
     volume_size = 20
@@ -53,6 +56,7 @@ resource "aws_instance" "k8s_worker" {
     volume_type = "gp2"
     volume_size = 20
   }
+  user_data = file("scripts/prepare_worker.sh")
   tags = {
     Name = format("node%d", var.worker_instances[ count.index])
   }
@@ -68,6 +72,8 @@ resource "aws_instance" "bastion" {
     volume_type = "gp2"
     volume_size = 10
   }
+  user_data = file("scripts/prepare_bastion.sh")
+
   tags = {
     Name = "bastion"
   }

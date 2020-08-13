@@ -2,7 +2,7 @@
 resource "aws_security_group" "public-sg" {
   vpc_id = aws_vpc.main.id
   name = "public-sg"
-  description = "security group that allows ssh,http and all egress traffic"
+  description = "security group that allows ssh"
   egress {
       from_port = 0
       to_port = 0
@@ -24,12 +24,12 @@ tags = {
 resource "aws_security_group" "private-sg" {
   vpc_id = aws_vpc.main.id
   name = "private-sg"
-  description = "security group that allows only internal ingress traffic and all egress traffic"
+  description = "security group that allows only internal ingress traffic "
   egress {
       from_port = 0
       to_port = 0
       protocol = "-1"
-      cidr_blocks = [var.vpc_cidr]
+      cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
     from_port = 0
@@ -49,12 +49,12 @@ resource "aws_network_acl" "public-NACL" {
   subnet_ids   = [ data.aws_subnet.public.id ]
 
   egress {
-    protocol   = "tcp"
+    protocol   = -1
     rule_no    = 100
     action     = "allow"
-    cidr_block = var.trusted_ip_range
-    from_port  = 22
-    to_port    = 22
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
   }
 
   ingress {
@@ -65,13 +65,14 @@ resource "aws_network_acl" "public-NACL" {
     from_port  = 22
     to_port    = 22
   }
-  egress {
-    protocol   = "tcp"
-    rule_no    = 120
+
+  ingress {
+    protocol   = -1
+    rule_no    = 110
     action     = "allow"
-    cidr_block = var.trusted_ip_range
-    from_port  = 32768
-    to_port    = 65535
+    cidr_block = var.vpc_cidr
+    from_port  = 0
+    to_port    = 0
   }
 
   ingress {
@@ -86,9 +87,6 @@ resource "aws_network_acl" "public-NACL" {
     Name = "public-acl"
   }
 }
-
-
-
 
 resource "aws_network_acl" "private-NACL" {
   vpc_id       = aws_vpc.main.id
@@ -107,7 +105,7 @@ resource "aws_network_acl" "private-NACL" {
     protocol   = -1
     rule_no    = 100
     action     = "allow"
-    cidr_block = "10.0.0.0/16"
+    cidr_block = "0.0.0.0/0"
     from_port  = 0
     to_port    = 0
   }

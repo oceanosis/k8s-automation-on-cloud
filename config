@@ -1,0 +1,32 @@
+### The Bastion Host
+Host bastion
+  HostName 18.133.78.80
+  User ubuntu
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  IdentityFile /Users/ufukdumlu/.ssh/automation
+  IdentitiesOnly yes
+  LogLevel FATAL
+
+Host master
+  HostName 10.0.4.11
+  ProxyJump bastion
+  User ubuntu
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  IdentityFile /Users/ufukdumlu/.ssh/automation
+  IdentitiesOnly yes
+  LogLevel FATAL
+
+Host node1
+  HostName 10.0.4.21
+  ProxyJump bastion
+  User ubuntu
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  IdentityFile /Users/ufukdumlu/.ssh/automation
+  IdentitiesOnly yes
+  LogLevel FATAL

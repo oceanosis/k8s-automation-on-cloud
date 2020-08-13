@@ -39,3 +39,11 @@ variable "trusted_ip_range" {
 variable "vpc_cidr" {
   default = "10.0.0.0/16"
 }
+
+variable "master_instance_ips" {
+  default     = ["10.0.4.11"]
+}
+
+variable "worker_instance_ips" {
+  default     = ["10.0.4.21"]
+}
