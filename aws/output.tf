@@ -1,19 +1,21 @@
-output "vpc_id" {
-  value = aws_vpc.main.id
-}
-
-output "bastion_ip" {
-  value = aws_instance.bastion.public_ip
-}
-
-output "bastion_dns" {
-  value = aws_instance.bastion.public_dns
-}
-
-output "master_ips" {
-  value = aws_instance.k8s_master.*.private_ip
-}
-
-output "worker_ips" {
-  value = aws_instance.k8s_worker.*.private_ip
-}
+//
+//output "worker_private_ip_addresses" {
+//  value = {
+//  for instance in module.worker:
+//    instance.instance_id => instance.private_ip
+//  }
+//}
+//
+//output "master_private_ip_addresses" {
+//  value = {
+//  for instance in module.master:
+//  instance.instance_id => instance.private_ip
+//  }
+//}
+//
+//output "bastion_private_ip_addresses" {
+//  value = {
+//  for instance in module.bastion:
+//  instance.instance_id => instance.private_ip
+//  }
+//}

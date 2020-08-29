@@ -10,9 +10,21 @@ Therefore, you may use this sample code as a starting point for your development
 
 
 ## TODO 
-> There will be 2 approaches to install kubernetes;
-- Installing kubernetes with kubeadm ( k8s services will be running as pod/deployment
-- Installing kubernetes services as a system service ( kubernetes the hard way - systemctl service in linux )
-
+> There will be 5 approaches to install kubernetes;
+- EKSCTL
+- KOPS
+- Kubeadm 
+- Kubespray
+- Kubernetes - the hard way 
 
 > Second part will be deploying istio and creating a sample service mash.
+
+---
+
+$ ./create.sh config
+ ssh master-1 -F ./config
+ 
+ 
+terraform validate
+terraform fmt -check -diff 
+chronic test.sh

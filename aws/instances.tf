@@ -14,67 +14,55 @@ data "aws_ami" "latest-ubuntu" {
   }
 }
 
-resource "aws_instance" "k8s_master" {
-  count = length(var.master_instances)
-  ami                  = data.aws_ami.latest-ubuntu.id
-  instance_type        = var.master_instance_type
-  key_name             = aws_key_pair.mykeypair.key_name
-  vpc_security_group_ids = [ aws_security_group.private-sg.id ]
-  subnet_id = data.aws_subnet.private.id
-  private_ip = var.master_instance_ips[ count.index]
-  root_block_device {
-    volume_type = "gp2"
-    volume_size = 20
-  }
-  ebs_block_device {
-    device_name = "/dev/sdh"
-    delete_on_termination = true
-    volume_type = "gp2"
-    volume_size = 20
-  }
-  user_data = file("scripts/prepare_master.sh")
-  tags = {
-    Name = format("master%d", var.master_instances[ count.index])
+resource "aws_key_pair" "mykeypair" {
+  key_name = "mykeypair"
+  public_key = file(var.PATH_TO_PUBLIC_KEY)
+}
+
+module "master" {
+  source  = "oceanosis/instance/aws"
+  ami_id = data.aws_ami.latest-ubuntu.id
+  version = "1.2.2"
+  instance_name = "master"
+  script_location = "./scripts/prepare_master.sh"
+  security_group_ids = aws_security_group.private-sg.id
+  subnet_ids = data.aws_subnet_ids.private.ids
+  instance_count = 1
+  key_name = aws_key_pair.mykeypair.key_name
+  tag = {
+    app = "kubemaster",
+    tier = "Dev"
   }
 }
 
-resource "aws_instance" "k8s_worker" {
-  count = length(var.worker_instances)
-  ami                  = data.aws_ami.latest-ubuntu.id
-  instance_type        = var.worker_instance_type
-  key_name             = aws_key_pair.mykeypair.key_name
-  vpc_security_group_ids = [ aws_security_group.private-sg.id ]
-  subnet_id = data.aws_subnet.private.id
-  private_ip = var.worker_instance_ips[ count.index]
-  root_block_device {
-    volume_type = "gp2"
-    volume_size = 20
-  }
-  ebs_block_device {
-    device_name = "/dev/sdh"
-    delete_on_termination = true
-    volume_type = "gp2"
-    volume_size = 20
-  }
-  user_data = file("scripts/prepare_worker.sh")
-  tags = {
-    Name = format("node%d", var.worker_instances[ count.index])
+module "worker" {
+  source  = "oceanosis/instance/aws"
+  ami_id = data.aws_ami.latest-ubuntu.id
+  version = "1.2.2"
+  instance_name = "worker"
+  script_location = "./scripts/prepare_worker.sh"
+  security_group_ids = aws_security_group.private-sg.id
+  subnet_ids = data.aws_subnet_ids.private.ids
+  instance_count = 2
+  key_name = aws_key_pair.mykeypair.key_name
+  tag = {
+    app = "kubeworker",
+    tier = "Dev"
   }
 }
 
-resource "aws_instance" "bastion" {
-  ami                  = data.aws_ami.latest-ubuntu.id
-  instance_type        = var.master_instance_type
-  key_name             = aws_key_pair.mykeypair.key_name
-  vpc_security_group_ids = [ aws_security_group.public-sg.id ]
-  subnet_id = data.aws_subnet.public.id
-  root_block_device {
-    volume_type = "gp2"
-    volume_size = 10
-  }
-  user_data = file("scripts/prepare_bastion.sh")
-
-  tags = {
-    Name = "bastion"
+module "bastion" {
+  source  = "oceanosis/instance/aws"
+  ami_id = data.aws_ami.latest-ubuntu.id
+  version = "1.2.2"
+  instance_name = "bastion"
+  script_location = "./scripts/prepare_bastion.sh"
+  security_group_ids = aws_security_group.public-sg.id
+  subnet_ids = data.aws_subnet_ids.public.ids
+  instance_count = 1
+  key_name = aws_key_pair.mykeypair.key_name
+  tag = {
+    app = "bastion",
+    tier = "Dev"
   }
 }

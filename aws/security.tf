@@ -1,6 +1,6 @@
 
 resource "aws_security_group" "public-sg" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = module.vpc.vpc_id
   name = "public-sg"
   description = "security group that allows ssh"
   egress {
@@ -22,7 +22,7 @@ tags = {
 }
 
 resource "aws_security_group" "private-sg" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = module.vpc.vpc_id
   name = "private-sg"
   description = "security group that allows only internal ingress traffic "
   egress {
@@ -45,8 +45,8 @@ resource "aws_security_group" "private-sg" {
 
 
 resource "aws_network_acl" "public-NACL" {
-  vpc_id       = aws_vpc.main.id
-  subnet_ids   = [ data.aws_subnet.public.id ]
+  vpc_id = module.vpc.vpc_id
+  subnet_ids   = data.aws_subnet_ids.public.ids
 
   egress {
     protocol   = -1
@@ -86,11 +86,12 @@ resource "aws_network_acl" "public-NACL" {
   tags = {
     Name = "public-acl"
   }
+  depends_on = [ data.aws_subnet_ids.public ]
 }
 
 resource "aws_network_acl" "private-NACL" {
-  vpc_id       = aws_vpc.main.id
-  subnet_ids   = [ data.aws_subnet.private.id ]
+  vpc_id = module.vpc.vpc_id
+  subnet_ids   = data.aws_subnet_ids.private.ids
 
   ingress {
     protocol   = -1
@@ -112,4 +113,6 @@ resource "aws_network_acl" "private-NACL" {
   tags = {
     Name = "private-acl"
   }
+  depends_on = [ data.aws_subnet_ids.private ]
+
 }
