@@ -1,6 +1,6 @@
 ### The Bastion Host
 Host bastion
-  HostName 3.8.120.196
+  HostName 3.10.179.224
   User ubuntu
   UserKnownHostsFile /dev/null
   StrictHostKeyChecking no

@@ -90,7 +90,7 @@ resource "aws_network_acl" "public-NACL" {
     rule_no    = 120
     action     = "allow"
     cidr_block = "0.0.0.0/0"
-    from_port  = 32768
+    from_port  = 1024
     to_port    = 65535
   }
   tags = {
