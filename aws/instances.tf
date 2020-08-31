@@ -1,3 +1,11 @@
+locals {
+  private_subnet_ids = tolist(
+    [ module.vpc.private_1_subnet_id, module.vpc.private_2_subnet_id,module.vpc.private_3_subnet_id ]
+  )
+  public_subnet_ids = tolist(
+    [ module.vpc.public_1_subnet_id, module.vpc.public_2_subnet_id,module.vpc.public_3_subnet_id ]
+  )
+}
 
 data "aws_ami" "latest-ubuntu" {
   most_recent = true
@@ -22,12 +30,13 @@ resource "aws_key_pair" "mykeypair" {
 module "master" {
   source  = "oceanosis/instance/aws"
   ami_id = data.aws_ami.latest-ubuntu.id
-  version = "1.2.2"
+  version = "1.2.4"
   instance_name = "master"
   script_location = "./scripts/prepare_master.sh"
   security_group_ids = aws_security_group.private-sg.id
-  subnet_ids = data.aws_subnet_ids.private.ids
+  subnet_ids = local.private_subnet_ids
   instance_count = 1
+  private_ips = var.master_private_ip
   key_name = aws_key_pair.mykeypair.key_name
   tag = {
     app = "kubemaster",
@@ -38,11 +47,12 @@ module "master" {
 module "worker" {
   source  = "oceanosis/instance/aws"
   ami_id = data.aws_ami.latest-ubuntu.id
-  version = "1.2.2"
+  version = "1.2.4"
   instance_name = "worker"
   script_location = "./scripts/prepare_worker.sh"
   security_group_ids = aws_security_group.private-sg.id
-  subnet_ids = data.aws_subnet_ids.private.ids
+  subnet_ids = local.private_subnet_ids
+  private_ips = var.worker_private_ip
   instance_count = 2
   key_name = aws_key_pair.mykeypair.key_name
   tag = {
@@ -54,11 +64,12 @@ module "worker" {
 module "bastion" {
   source  = "oceanosis/instance/aws"
   ami_id = data.aws_ami.latest-ubuntu.id
-  version = "1.2.2"
+  version = "1.2.4"
   instance_name = "bastion"
   script_location = "./scripts/prepare_bastion.sh"
   security_group_ids = aws_security_group.public-sg.id
-  subnet_ids = data.aws_subnet_ids.public.ids
+  private_ips = var.bastion_private_ip
+  subnet_ids = local.public_subnet_ids
   instance_count = 1
   key_name = aws_key_pair.mykeypair.key_name
   tag = {
