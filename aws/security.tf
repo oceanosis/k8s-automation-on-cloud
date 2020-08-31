@@ -9,7 +9,12 @@ resource "aws_security_group" "public-sg" {
       protocol = "-1"
       cidr_blocks = ["0.0.0.0/0"]
   }
-
+  ingress {
+    from_port = 32768
+    to_port = 65535
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   ingress {
       from_port = 22
       to_port = 22
@@ -35,9 +40,14 @@ resource "aws_security_group" "private-sg" {
     from_port = 0
     to_port = 0
     protocol = "-1"
-    cidr_blocks = [var.vpc_cidr]
+    security_groups = [ aws_security_group.public-sg.id ]
   }
-
+  ingress {
+    from_port = 32768
+    to_port =  65535
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   tags = {
     Name = "private-sg"
   }
@@ -58,12 +68,12 @@ resource "aws_network_acl" "public-NACL" {
   }
 
   ingress {
-    protocol   = "tcp"
+    protocol   = -1
     rule_no    = 100
     action     = "allow"
     cidr_block = var.trusted_ip_range
-    from_port  = 22
-    to_port    = 22
+    from_port  = 0
+    to_port    = 0
   }
 
   ingress {
@@ -79,7 +89,7 @@ resource "aws_network_acl" "public-NACL" {
     protocol   = "tcp"
     rule_no    = 120
     action     = "allow"
-    cidr_block = var.trusted_ip_range
+    cidr_block = "0.0.0.0/0"
     from_port  = 32768
     to_port    = 65535
   }
@@ -97,11 +107,10 @@ resource "aws_network_acl" "private-NACL" {
     protocol   = -1
     rule_no    = 100
     action     = "allow"
-    cidr_block = "10.0.0.0/16"
+    cidr_block = "0.0.0.0/0"
     from_port  = 0
     to_port    = 0
   }
-
   egress {
     protocol   = -1
     rule_no    = 100

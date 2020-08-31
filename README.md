@@ -20,11 +20,15 @@ Therefore, you may use this sample code as a starting point for your development
 > Second part will be deploying istio and creating a sample service mash.
 
 ---
-
+```shell script
 $ ./create.sh config
- ssh master-1 -F ./config
+$ ssh master-1 -F ./config
+```
+
  
- 
-terraform validate
-terraform fmt -check -diff 
-chronic test.sh
+- Test
+```shell script
+$ terraform validate
+$ terraform fmt -check -diff 
+$ chronic test.sh
+```
