@@ -21,14 +21,26 @@ Therefore, you may use this sample code as a starting point for your development
 
 ---
 ```shell script
+export TF_VAR_AWS_ACCESS_KEY="accesskey"
+export TF_VAR_AWS_SECRET_KEY="secretkey"
+export TF_VAR_AWS_REGION="eu-west-2"
+export TF_VAR_trusted_ip_range="$(curl http://ifconfig.co)/32"  # Or give your trusted IP range
+export TF_VAR_PATH_TO_PUBLIC_KEY="$HOME/.ssh/automation.pub"
+export TF_VAR_PATH_TO_PRIVATE_KEY="$HOME/.ssh/automation"
+... and so on... ( Check vars.tf )
+```
+
+> In order to ssh to nodes, you may use ssh-config as below;
+```shell script
 $ ./create.sh config
 $ ssh master-1 -F ./config
 ```
 
  
-- Test
+> Test 
 ```shell script
 $ terraform validate
 $ terraform fmt -check -diff 
 $ chronic test.sh
+And many more will be added...
 ```
