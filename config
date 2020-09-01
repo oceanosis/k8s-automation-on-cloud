@@ -1,6 +1,4 @@
-### The Bastion Host
-Host bastion
-  HostName 3.8.101.162
+Host *
   User ubuntu
   UserKnownHostsFile /dev/null
   StrictHostKeyChecking no
@@ -8,6 +6,21 @@ Host bastion
   IdentityFile /Users/ufukdumlu/.ssh/automation
   IdentitiesOnly yes
   LogLevel FATAL
+  # ProxyCommand="ssh -W %h:%p -q -i /Users/ufukdumlu/.ssh/automation ubuntu@18.133.235.222"
+  ForwardAgent yes
+  ProxyJump bastion
+
+
+Host bastion
+  HostName 18.133.235.222
+  User ubuntu
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  IdentityFile /Users/ufukdumlu/.ssh/automation
+  IdentitiesOnly yes
+  LogLevel FATAL
+  ForwardAgent yes
 
 Host master
   HostName 10.0.101.11

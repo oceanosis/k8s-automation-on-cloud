@@ -1,0 +1,15 @@
+
+[bastion]
+bastion
+
+[master]
+master
+
+[worker]
+node1
+node2
+
+[k8s]
+master
+node1
+node2

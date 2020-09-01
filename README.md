@@ -42,5 +42,10 @@ $ ssh master-1 -F ./config
 $ terraform validate
 $ terraform fmt -check -diff 
 $ chronic test.sh
+$ ansible-playbook -i inventory/inventory.static test.yaml
+$ ansible-playbook -i inventory/inventory.static test.yaml
+$ python ./inventory/ec2.py --list
+$ ansible -m ping "eu-west-2" -i inventory/ec2.py 
 And many more will be added...
+
 ```

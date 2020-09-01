@@ -1,0 +1,13 @@
+---
+- hosts: all
+  vars:
+    test: "v1"
+  become: yes
+  tasks:
+    - name: test connection
+      ping:
+      remote_user: ubuntu
+    - name: check package
+      package:
+        name: "docker-ce"
+        state: present
