@@ -1,5 +1,5 @@
 
-> Create keypair
+> Create keypair for nodes
 ```shell script
 aws ec2 import-key-pair --key-name=mykeypair --public-key-material fileb://~/.ssh/automation.pub
 ```
@@ -7,9 +7,12 @@ aws ec2 import-key-pair --key-name=mykeypair --public-key-material fileb://~/.ss
 Add the --encryption-config parameter to the aws eks create-cluster command. Encryption of Kubernetes secrets can only be enabled when the cluster is created.
 ```shell script
 MY_KEY_ARN=$(aws kms create-key --query KeyMetadata.Arn —-output text)
+```
+ - assign it in the cluster creation. I did not set it in here...
+```shell script
 --encryption-config '[{"resources":["secrets"],"provider":{"keyArn":"$MY_KEY_ARN"}}]'
 ```
-> Create Cluster in existing VPC
+> Create Cluster in existing VPC 
 ```shell script
 eksctl create cluster \
 --name=cloudfrog \
@@ -37,7 +40,7 @@ eksctl utils update-cluster-logging \
 --region=eu-west-2 --cluster=cloudfrog
 ```
 
-> Deploy AWS VPC CNI 
+> Deploy AWS VPC CNI ( no need,already there but just as a note)
 ```shell script
 helm repo add eks https://aws.github.io/eks-charts
 helm install --name aws-vpc-cni --namespace kube-system eks/aws-vpc-cni
