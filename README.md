@@ -1,15 +1,15 @@
-## Creating a sample kubernetes environment with istio service mesh on AWS 
- 
+# Configuring kubernetes on AWS
 
 Microservices have become a popular architectural style for building cloud-native applications that are self-contained, independently deployable, resilient and quickly evolve. 
+
 Additionally, Istio makes it easy to create a network of deployed services with load balancing, service-to-service authentication, monitoring.
 
 ---
 
 Therefore, you may use this sample code as a starting point for your development environment. 
 
-## TODO 
-> There will be 5 approaches to install kubernetes;
+## Best Approaches to have a K8S Cluster
+> Select one of the approach to start with;
 - [EKSCTL](docs/eks.md)
 - [Kops](docs/kops.md)
 - [Kubeadm](docs/kubeadm.md)
@@ -25,14 +25,20 @@ export TF_VAR_trusted_ip_range="$(curl http://ifconfig.co)/32"  # Or give your t
 export TF_VAR_PATH_TO_PUBLIC_KEY="$HOME/.ssh/automation.pub"
 export TF_VAR_PATH_TO_PRIVATE_KEY="$HOME/.ssh/automation"
 ... and so on... ( Check vars.tf )
+...export ansible vars...
 ```
+---
 
-> In order to ssh to nodes, you may use ssh-config as below;
+
+> ............................................................... loading...............................
+
+
+
+* In order to ssh to nodes, you may use ssh-config as below;
 ```shell script
 # Change bastion public ip in the config
 $ ssh master-1 -F ./config
 ```
-
  
 > Test 
 - TODO: MoP will be prepared and many more will be added with automated tests...
